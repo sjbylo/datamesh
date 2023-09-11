@@ -32,6 +32,9 @@ spec:
         - mountPath: /var/www/html/secret
           readOnly: true
           name: config-demo-secret
+        - mountPath: /var/www/html/example-password-secret
+          readOnly: true
+          name: example-password-secret
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
@@ -63,3 +66,6 @@ spec:
       - name: config-demo-secret
         secret:
           secretName: config-demo-secret
+      - name: example-password-secret
+        secret:
+          secretName: example-password-secret
