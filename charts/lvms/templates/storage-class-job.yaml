@@ -14,8 +14,7 @@ spec:
         - |
           oc annotate sc/lvms-{{ .Values.lvms.volumeGroup }} storageclass.kubernetes.io/is-default-class=true
           set +e
-          oc annotate sc/gp2 storageclass.kubernetes.io/is-default-class-
-          oc annotate sc/gp3-csi storageclass.kubernetes.io/is-default-class-
+          oc get sc -oname | grep -v /lvms-{{ .Values.lvms.volumeGroup }}$| while read line; do echo oc annotate $line storageclass.kubernetes.io/is-default-class-; done
         name: annotate-sc
       dnsPolicy: ClusterFirst
       restartPolicy: Never
