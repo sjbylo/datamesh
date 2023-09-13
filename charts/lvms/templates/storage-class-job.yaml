@@ -19,6 +19,6 @@ spec:
         name: annotate-sc
       dnsPolicy: ClusterFirst
       restartPolicy: Never
-      serviceAccount: sc-annotater
-      serviceAccountName: sc-annotater
+      serviceAccount: default
+      serviceAccountName: default
       terminationGracePeriodSeconds: 400
