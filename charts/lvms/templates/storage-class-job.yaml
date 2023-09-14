@@ -14,7 +14,7 @@ spec:
         - |
           oc annotate --overwrite sc/lvms-{{ .Values.lvms.volumeGroup }} storageclass.kubernetes.io/is-default-class=true
           set +e
-          oc get sc -oname | grep -v /lvms-{{ .Values.lvms.volumeGroup }}$| while read line; do oc annotate --overwrite $line storageclass.kubernetes.io/is-default-class-; done
+          oc get sc -oname | grep -v "/lvms-vgdatamesh$"| while read sc; do oc annotate --overwrite $sc storageclass.kubernetes.io/is-default-class-; done
         name: annotate-sc
       dnsPolicy: ClusterFirst
       restartPolicy: Never
