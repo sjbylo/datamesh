@@ -7,7 +7,6 @@ clusterGroup:
     - vault
     - golang-external-secrets
     - openshift-storage
-    - ipa
 
   subscriptions:
     acm:
@@ -15,10 +14,10 @@ clusterGroup:
       namespace: open-cluster-management
       channel: release-2.8
       #csv: advanced-cluster-management.v2.6.1
-    lvms:
-      name: lvms-operator
-      namespace: openshift-storage
-      channel: stable-4.12
+#    lvms:
+#      name: lvms-operator
+#      namespace: openshift-storage
+#      channel: stable-4.12
 
   projects:
     - hub
@@ -35,11 +34,11 @@ clusterGroup:
         jsonPointers:
           - /spec/loggingCA
 
-    lvms:
-      name: lvms
-      namespace: openshift-storage
-      project: hub
-      path: charts/lvms
+#    lvms:
+#      name: lvms
+#      namespace: openshift-storage
+#      project: hub
+#      path: charts/lvms
 
     vault:
       name: vault
