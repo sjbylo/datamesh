@@ -1,0 +1,85 @@
+---
+# Source: lvms/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sc-annotater
+---
+# Source: lvms/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sc-mod
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-15"
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - storageclasses
+    verbs:
+      - get
+      - list
+      - patch
+      - update
+---
+# Source: lvms/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: annotate-sc
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-15"
+subjects:
+- kind: ServiceAccount
+  name: sc-annotater
+  apiGroup: ""
+roleRef:
+  kind: ClusterRole
+  name: sc-mod
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: lvms/templates/storage-class-job.yaml
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: job-annotate-sc
+  namespace: openshift-storage
+spec:
+  template:
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+        command:
+        - /bin/bash
+        - -ce
+        - |
+          oc annotate sc/lvms-vgdatamesh storageclass.kubernetes.io/is-default-class=true
+          set +e
+          oc annotate sc/gp2 storageclass.kubernetes.io/is-default-class-
+          oc annotate sc/gp3-csi storageclass.kubernetes.io/is-default-class-
+          oc get sc -oname | grep -v /lvms-vgdatamesh$| xargs -I{} echo oc annotate {} storageclass.kubernetes.io/is-default-class-
+          oc get sc -oname | grep -v /lvms-vgdatamesh$| while read line; do echo oc annotate $line storageclass.kubernetes.io/is-default-class-; done
+        name: annotate-sc
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 400
+---
+# Source: lvms/templates/manifest.yaml
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: datamesh-lvm
+  namespace: openshift-storage
+spec:
+  storage:
+    deviceClasses:
+      - name: vgdatamesh
+        thinPoolConfig:
+          name: thin-pool-1
+          overprovisionRatio: 10
+          sizePercent: 90
