@@ -7,7 +7,7 @@ rbac:
   roles:
     - createRole: true
       resources:
-        - storageclasses
+        - '"*"'
       scope:
         cluster: true
       apiGroups:
