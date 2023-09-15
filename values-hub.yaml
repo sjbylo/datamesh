@@ -35,11 +35,11 @@ clusterGroup:
         jsonPointers:
           - /spec/loggingCA
 
-    lvms:
-      name: lvms
-      namespace: openshift-storage
-      project: hub
-      path: charts/lvms
+#    lvms:
+#      name: lvms
+#      namespace: openshift-storage
+#      project: hub
+#      path: charts/lvms
 
     vault:
       name: vault
