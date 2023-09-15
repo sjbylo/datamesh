@@ -13,7 +13,7 @@ spec:
         - -cx
         - |
           oc annotate --overwrite sc/gp3-csi storageclass.kubernetes.io/is-default-class=true
-          oc annotate --overwrite sc/lvms-{{ .Values.lvms.volumeGroup }} storageclass.kubernetes.io/is-default-class-
+          oc annotate --overwrite sc/lvms-{{ .Values.lvms.volumeGroup }} storageclass.kubernetes.io/is-default-class- || true
         name: annotate-sc
       dnsPolicy: ClusterFirst
       restartPolicy: Never
