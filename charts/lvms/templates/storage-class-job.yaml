@@ -10,7 +10,7 @@ spec:
       - image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
         command:
         - /bin/bash
-        - -cex
+        - -cx
         - |
           oc annotate --overwrite sc/gp3-csi storageclass.kubernetes.io/is-default-class=true
           oc annotate --overwrite sc/lvms-{{ .Values.lvms.volumeGroup }} storageclass.kubernetes.io/is-default-class-
