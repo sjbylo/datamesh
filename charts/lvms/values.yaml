@@ -13,7 +13,7 @@ rbac:
       apiGroups:
         - "storage.k8s.io/v1"
       verbs:
-        - "*"
+        - '"*"'
 #        - "get"
 #        - "list"
 #        - "patch"
