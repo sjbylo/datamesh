@@ -15,10 +15,10 @@ clusterGroup:
       namespace: open-cluster-management
       channel: release-2.8
       csv: advanced-cluster-management.v2.6.1
-    lvms:
-      name: lvms-operator
-      namespace: openshift-storage
-      channel: stable-4.12
+#    lvms:
+#      name: lvms-operator
+#      namespace: openshift-storage
+#      channel: stable-4.12
 
   projects:
     - hub
